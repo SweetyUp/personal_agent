@@ -28,8 +28,12 @@ def haruhi2GLM(init_path,save_path):
 
 def main():
     init_path = r'/Users/xiaotianqi/code/GraduationPrj/dataset/init_dataset/Haruhi_54K_v1.jsonl'
-    save_path = r'/Users/xiaotianqi/code/GraduationPrj/dataset/pro_dataset/Haruhi_50K_v1.jsonl'
-    haruhi2GLM(init_path,save_path)
+    pro_data_save_path = r'/Users/xiaotianqi/code/GraduationPrj/dataset/pro_dataset/data_1004/Haruhi_50K_v1.jsonl'
+    haruhi2GLM(init_path,pro_data_save_path)
+
+    split_data_save_path = r'./dataset/pro_dataset/data_1004/'
+    train_data, val_data, test_data = split_data(pro_data_save_path,save_path=split_data_save_path, train_ratio=0.98, dev_ratio=0.01, test_ratio=0.01)
+
 
 
 if __name__ == "__main__":

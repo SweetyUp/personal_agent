@@ -1,6 +1,40 @@
 import json
 import os
 
+import json
+import random
+
+def split_data(jsonl_file, save_path,train_ratio=0.7, dev_ratio=0.15, test_ratio=0.15):
+    # 读取JSONL文件
+    data = []
+    with open(jsonl_file, 'r', encoding='utf-8') as file:
+        for line in file:
+            record = json.loads(line)
+            data.append(record)
+
+    # 打乱数据顺序
+    random.seed(1012)
+    random.shuffle(data)
+
+    # 计算数据集划分的索引
+    total_count = len(data)
+    train_count = int(total_count * train_ratio)
+    dev_count = int(total_count * dev_ratio)
+
+    # 划分数据集
+    train_data = data[:train_count]
+    dev_data = data[train_count:train_count + dev_count]
+    test_data = data[train_count + dev_count:]
+
+    for temp_train_data in train_data:
+        data2jsonl( f'{save_path}train.jsonl',temp_train_data)
+    for temp_dev_data in dev_data:
+        data2jsonl( f'{save_path}dev.jsonl',temp_dev_data)
+    for temp_test_data in test_data:
+        data2jsonl(f'{save_path}test.jsonl',temp_test_data)
+
+    return train_data, dev_data, test_data
+
 def list_directory_structure(directory):
     for root, dirs, files in os.walk(directory):
         level = root.replace(directory, '').count(os.sep)
